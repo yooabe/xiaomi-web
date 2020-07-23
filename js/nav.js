@@ -28,6 +28,8 @@ define(["jquery"], function($) {
             }
 
         })
+
+        leftNavDownload();
     }
 
     //实现轮播图的效果
@@ -86,6 +88,38 @@ define(["jquery"], function($) {
                 iNow++;
             }
             tab();
+        })
+    }
+
+
+    //侧边导航栏数据的加载
+    function leftNavDownload(){
+        $.ajax({
+            url:"../data/nav.json",
+            success:function(result){
+                var sideArr = result.sideNav;
+                for(var i =0;i<sideArr.length;i++){
+                    var node = $(`<li class = 'category-item'>
+                    <a href="/index.html" class = 'title'>
+                        ${sideArr[i].title}
+                        <em class = 'iconfont-arrow-right-big'></em>
+                    </a>
+                    <div class="children clearfix" style = 'display: block'>
+                        
+                    </div>
+                </li>`);
+                node.appendTo("#J_categoryList")
+
+                //取出当前选项对应的子节点
+                var childArr = sideArr[i].child;
+                //取列数 一列6个
+                var col = Math.ceil(childArr.length/6);
+                node.find("div.children").addClass("children-col-"+col);
+                }
+            },
+            error:function(msg){
+                console.log(msg);
+            }
         })
     }
 
