@@ -17,4 +17,5 @@ require.config({
 require(["nav"],function(nav){
     nav.download();
     nav.banner();
+    nav.leftNavTab();
 })
