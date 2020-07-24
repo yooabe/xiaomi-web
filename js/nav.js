@@ -212,6 +212,19 @@ define(["jquery"], function ($) {
         })
     }
 
+    //商品列表移入移出
+    function allGoodsTab(){
+        $(".header-nav .nav-list").on("mouseenter",".nav-category",function(){
+            $(this).addClass("nav-category-active");
+            $(this).find(".site-category").css("display","block");
+        })
+
+        $(".header-nav .nav-list").on("mouseleave",".nav-category",function(){
+            $(this).removeClass("nav-category-active");
+            $(this).find(".site-category").css("display","none");
+        })
+    }
+
     //搜索框
     function searchTab(){
         $("#search").focus(function(){
@@ -228,7 +241,10 @@ define(["jquery"], function ($) {
         banner: banner,
         leftNavTab: leftNavTab,
         topNavTab: topNavTab,
-        searchTab:searchTab
+        searchTab:searchTab,
+        leftNavDownload:leftNavDownload,
+        topNavDownload:topNavDownload,
+        allGoodsTab:allGoodsTab
     }
 
 })
