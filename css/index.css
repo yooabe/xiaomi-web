@@ -2733,7 +2733,7 @@ img:not([src]), img[src=""] {
   position: relative;
   width: 296px;
   height: 50px;
-  z-index: 20; }
+  z-index: 50; }
 
 .site-header .search-form .keyword-list {
   position: absolute;
