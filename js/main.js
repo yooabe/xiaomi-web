@@ -28,5 +28,6 @@ require(["nav","slide","data"],function(nav,slide,data){
     slide.slideTab();
 
     data.download();
+    data.tabMenu();
     
 })

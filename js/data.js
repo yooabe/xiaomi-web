@@ -143,6 +143,37 @@ define(["jquery"], function ($) {
                     </div>
                 </a>
             </li>`).appendTo(node2.find(".span16 ul").eq(0));
+
+                    //实现第二部分子商品数据
+                    var childs = arr[i].childs;
+                    for(var l=0;l<childs.length;l++){
+                        $(`<div>
+                    <li class = 'brick-item ${l == 7 ? "brick-item-s" : "brick-item-m brick-item-m-2"}'>
+                        <a href="#">
+                            <div class = 'figure figure-img'>
+                                <img width="160" height="160" src="${childs[l].img}" alt=""/>
+                            </div>
+                            <h3 class = 'title'>${childs[l].title}</h3>
+                            <p class = 'desc'>${childs[l].desc}</p>
+                            <p class = 'price'>
+                                <span class = 'num'>${hotChilds[l].price}</span>元
+                                ${childs[l].del == 0 ? "" : "<del><span class = 'num'>" + childs[l].del + "</span>元</del>"}
+                            </p>
+                        </a>
+                    </li>
+                </div>`).appendTo(node2.find(".span16 ul").eq(1));
+                    }
+                    $(`<li class = 'brick-item brick-item-s'>
+                <a href="#">
+                    <div class = 'figure figure-more'>
+                        <i class = 'iconfont iconfont-circle-arrow-right'></i>
+                    </div>
+                    <div class = 'more'>
+                        浏览更多
+                        <small>${arr[i].subTitle}</small>
+                    </div>
+                </a>
+            </li>`).appendTo(node2.find(".span16 ul").eq(1));
                 }
 
 
@@ -153,7 +184,18 @@ define(["jquery"], function ($) {
         })
     }
 
+    //事件委托添加移入移出
+    function tabMenu(){
+        $(".page-main .container").on("mouseenter",".more .tab-list li",function(){
+            $(this).addClass("tab-active").siblings("li").removeClass("tab-active");
+
+            //切换显示内容
+            $(this).closest(".home-brick-box").find(".box-bd .span16 ul").addClass("hide").eq($(this).index()).removeClass("hide");
+        })
+    }
+
     return {
-        download: download
+        download: download,
+        tabMenu:tabMenu
     }
 })
