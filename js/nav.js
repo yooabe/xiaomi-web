@@ -30,6 +30,7 @@ define(["jquery"], function ($) {
         })
 
         leftNavDownload();
+        topNavDownload();
     }
 
     //实现轮播图的效果
@@ -140,13 +141,76 @@ define(["jquery"], function ($) {
     }
 
     //给侧边导航添加移入移出效果  选项卡
-    function leftNavTab(){
+    function leftNavTab() {
         //通过事件委托
-        $("#J_categoryList").on("mouseenter",".category-item",function(){
+        $("#J_categoryList").on("mouseenter", ".category-item", function () {
             $(this).addClass("category-item-active");
         })
-        $("#J_categoryList").on("mouseleave",".category-item",function(){
+        $("#J_categoryList").on("mouseleave", ".category-item", function () {
             $(this).removeClass("category-item-active");
+        })
+    }
+
+
+    //顶部导航数据
+    function topNavDownload() {
+        $.ajax({
+            url: "../data/nav.json",
+            success: function (result) {
+                //取出数据
+                var topNavArr = result.topNav;
+                topNavArr.push({ title: "服务" }, { title: "社区" });
+                for (var i = 0; i < topNavArr.length; i++) {
+                    $(`<li data-index="${i}" class="nav-item">
+                    <a href="javascript:void(0);" class="link">
+                        <span class="text">${topNavArr[i].title}</span>
+                    </a>
+                </li>`).appendTo(".site-header .header-nav .nav-list");
+
+                    var node = $(`<ul class="children-list clearfix" style="display: ${i == 0 ? "block" : "none"}"></ul>`);
+                    node.appendTo("#J_navMenu .container");
+
+                    //取出所以子菜单
+                    if (topNavArr[i].childs) {
+                        var childArr = topNavArr[i].childs;
+                        for (var j = 0; j < childArr.length; j++) {
+                            $(`<li>
+                        <a href="#">
+                            <div class="figure figure-thumb">
+                                <img src="${childArr[j].img}" alt="">
+                            </div>
+                            <div class="title">${childArr[j].a}</div>
+                            <p class="price">${childArr[j].i}</p>
+                        </a>
+                    </li>`).appendTo(node);
+                        }
+                    }
+                }
+
+            },
+            errr: function (msg) {
+                console.log(msg)
+            }
+        })
+    }
+
+    //顶部导航 移入移出效果
+    function topNavTab() {
+        $(".header-nav .nav-list").on("mouseenter", ".nav-item", function () {
+            $(this).addClass("nav-item-active");
+            //找出当前移入a标签下标 这个下标与下面的ul下标一致
+            var index = $(this).index() - 1;
+            if (index >= 0 && index <= 6) {
+                $("#J_navMenu").css({ display: "block" }).removeClass("slide-up").addClass("slide-down");
+                $("#J_navMenu .container").find("ul").eq(index).css("display", "block").siblings("ul").css("display", "none");
+            }
+
+        })
+        $(".header-nav .nav-list").on("mouseleave", ".nav-item", function () {
+            $(this).removeClass("nav-item-active");
+        })
+        $(".site-header").mouseleave(function () {
+            $("#J_navMenu").css({ display: "block" }).removeClass("slide-down").addClass("slide-up");
         })
     }
 
@@ -154,7 +218,8 @@ define(["jquery"], function ($) {
     return {
         download: download,
         banner: banner,
-        leftNavTab:leftNavTab
+        leftNavTab: leftNavTab,
+        topNavTab: topNavTab
     }
 
 })
