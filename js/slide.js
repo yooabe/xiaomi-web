@@ -39,9 +39,9 @@ define(["jquery"], function ($) {
         var timer = setInterval(function () {
             iNow++;
             tab();
-            if (iNow == count) {
+            /* if (iNow == count) {
                 clearInterval(timer);
-            }
+            } */
         }, 4000);
 
         function tab() {
@@ -49,7 +49,11 @@ define(["jquery"], function ($) {
             iNow == count ? aSpans.eq(1).addClass("swiper-button-disabled") : aSpans.eq(1).removeClass("swiper-button-disabled")
 
             //计算运动的目的值
-            var iTarget = iNow >= count ? iNow * -992 + 496 : iNow * -992;
+            var iTarget = iNow == count ? iNow * -992 + 496 : iNow * -992;
+            if(iNow > count){
+                iTarget = 0;
+                iNow = 0;
+            }
             $("#J_flashSaleList ul").css({
                 transform: `translate3d(${iTarget}px, 0px, 0px)`,
                 transitionDuration: "1000ms"
