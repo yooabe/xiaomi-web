@@ -19,4 +19,5 @@ require(["nav"],function(nav){
     nav.banner();
     nav.leftNavTab();
     nav.topNavTab();
+    nav.searchTab()
 })

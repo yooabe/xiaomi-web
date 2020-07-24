@@ -214,12 +214,22 @@ define(["jquery"], function ($) {
         })
     }
 
+    //搜索框
+    function searchTab(){
+        $("#search").focus(function(){
+            $("#J_keywordList").removeClass("hide").addClass("show");
+        }).blur(function(){
+            $("#J_keywordList").removeClass("show").addClass("hide");
+        })
+    }
+
 
     return {
         download: download,
         banner: banner,
         leftNavTab: leftNavTab,
-        topNavTab: topNavTab
+        topNavTab: topNavTab,
+        searchTab:searchTab
     }
 
 })
