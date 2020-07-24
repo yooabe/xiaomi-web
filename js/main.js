@@ -7,7 +7,8 @@ require.config({
         "jquery":"jquery-1.11.3",
         "jquery-cookie":"jquery.cookie",
         "nav":"nav",
-        "slide":"slide"
+        "slide":"slide",
+        "data":"data"
     },
     shim:{
         //设置依赖关系
@@ -15,7 +16,7 @@ require.config({
     }
 })
 
-require(["nav","slide"],function(nav,slide){
+require(["nav","slide","data"],function(nav,slide,data){
 
     nav.download();
     nav.banner();
@@ -25,4 +26,7 @@ require(["nav","slide"],function(nav,slide){
 
     slide.download();
     slide.slideTab();
+
+    data.download();
+    
 })
