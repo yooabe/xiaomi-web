@@ -208,6 +208,9 @@ define(["jquery"], function ($) {
         })
         $(".header-nav .nav-list").on("mouseleave", ".nav-item", function () {
             $(this).removeClass("nav-item-active");
+        })
+
+        $(".site-header").mouseleave(function(){
             $("#J_navMenu").css({ display: "block" }).removeClass("slide-down").addClass("slide-up");
         })
     }
@@ -232,7 +235,6 @@ define(["jquery"], function ($) {
         }).blur(function(){
             $("#J_keywordList").removeClass("show").addClass("hide");
         })
-        $("")
     }
 
 
