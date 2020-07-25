@@ -19,6 +19,7 @@ require(["nav","goodsList"],function(nav,goodsList){
     nav.allGoodsTab();
 
     goodsList.download();
+    goodsList.banner();
 
 
 

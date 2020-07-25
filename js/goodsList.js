@@ -38,9 +38,9 @@ define(["jquery"], function ($) {
             </div>`).appendTo(".app-body");
 
                 //创建小图的商品
-                for(var i =1 ;i<arr.length;i++){
+                for (var i = 1; i < arr.length; i++) {
                     //每两个商品为一行
-                    if(i%2!=0){
+                    if (i % 2 != 0) {
                         var row = $(`<div data-v-61428f58 class = 'section'>
                         <div data-v-61428f58 class = 'components-list-box'>
                             <div data-v-45ef62b1 class = 'channel-product channel-product-two4'>
@@ -76,7 +76,59 @@ define(["jquery"], function ($) {
             }
         })
     }
+
+    //实现商品列表页轮播图效果
+    function banner() {
+        //获取页面上所有的图
+        var oDiv = $(".swiper-container .swiper-wrapper");
+        //获取页面上所有的按钮
+        var aBtns = $(".swiper-container .swiper-pagination a")
+        //设置当前显示图片的下标
+        var iNow = 0;
+        var timer = null;
+
+        //给按钮添加点击事件
+        aBtns.click(function () {
+            iNow = $(this).index();
+            tab();
+            return false;//阻止标签默认行为
+        })
+
+        timer = setInterval(function () {
+            iNow++;
+            tab();
+        }, 4000);
+
+        //切换函数
+        function tab() {
+            aBtns.removeClass("swiper-pagination-bullet-active").eq(iNow).addClass("swiper-pagination-bullet-active");
+            if (iNow == aBtns.size()) {
+                aBtns.eq(0).addClass("swiper-pagination-bullet-active");
+            }
+            oDiv.animate({ left: -2560 * iNow }, 1000, function () {
+                //判断是否为最后一张图片
+                if (iNow == aBtns.size()) {
+                    iNow = 0;
+                    oDiv.css("left", 0);
+                }
+            });
+
+        }
+
+        //轮播图添加移入移出
+        $(".swiper-container").mouseenter(function () {
+            clearInterval(timer);
+        })
+        $(".swiper-container").mouseleave(function () {
+            timer = setInterval(function () {
+                iNow++;
+                tab();
+            }, 4000);
+        })
+
+    }
     return {
-        download: download
+        download: download,
+        banner: banner
     }
 })
