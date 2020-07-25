@@ -5,15 +5,22 @@ require.config({
     paths:{
         "jquery":"jquery-1.11.3",
 
-        "nav":"nav"
+        "nav":"nav",
+        "goodsList":"goodsList"
     }
 })
 
-require(["nav"],function(nav){
+require(["nav","goodsList"],function(nav,goodsList){
     nav.leftNavDownload();
     nav.topNavDownload();
     nav.leftNavTab();
     nav.topNavTab();
     nav.searchTab();
     nav.allGoodsTab();
+
+    goodsList.download();
+
+
+
+
 })
