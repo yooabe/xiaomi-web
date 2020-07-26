@@ -5,9 +5,9 @@ define(["jquery", "jquery-cookie"], function ($) {
         var product_id = valueByName(location.search, "product_id");
         //通过商品id找到商品信息
         $.ajax({
-            type:"get",
-            url:"../data/goodsList.json",
-            success:function(arr){
+            type: "get",
+            url: "../data/goodsList.json",
+            success: function (arr) {
                 //通过id找到商品数据
                 var goodsMsg = arr.find(item => item.product_id == product_id);
                 var node = $(` <!-- 导航 -->
@@ -136,11 +136,108 @@ define(["jquery", "jquery-cookie"], function ($) {
                     </div>
                 </div>`).insertAfter("#app div .header");
 
+                //找到当前详情页所有的图片
+                var aImages = goodsMsg.images;
+                //判断是否为一张
+                if (aImages.length == 1) {
+                    $(`<img class = 'slider done' 
+                    src="${aImages[0]}" 
+                    style="float: none; list-style: none; position: absolute; width: 560px; z-index: 0; display: block;" 
+                    alt=""/>`).appendTo(node.find("#J_sliderView"))
+
+                    //隐藏上一张下一张
+                    node.find(".ui-controls").hide();
+                } else {
+                    for (var i = 0; i < aImages.length; i++) {
+                        //显示图片按钮
+                        $(`<div class = 'ui-pager-item'>
+                                <a href="#" data-slide-index = "0" class = 'ui-pager-link ${i == 0 ? "active" : ""}'>1</a>
+                           </div>`).appendTo(node.find(".ui-pager"));
+
+                        //创建图片本身
+                        $(`<img class = 'slider done' 
+                           src="${aImages[i]}" 
+                           style="float: none; list-style: none; position: absolute; width: 560px; z-index: 0; display: ${i == 0 ? "block" : "none"};" 
+                           alt=""/>`).appendTo(node.find("#J_sliderView"));
+                    }
+                }
+
+
             },
-            error:function(msg){
+            error: function (msg) {
                 console.log(msg);
             }
         })
+    }
+
+    //添加轮播效果
+    function banner() {
+        var iNow = 0;//默认第一张图显示
+        var aBtns = null;//获取小块按钮
+        var aImgs = null;//获取图片
+        var timer = null;//定时器
+
+        //启动定时器自动切换
+        timer = setInterval(function () {
+            iNow++;
+            tab();
+        }, 3000)
+
+        //点击按钮完成切换 事件委托
+        $("#app div").on("click", ".ui-controls .ui-pager .ui-pager-item a", function () {
+            //获取当前点击的a的父节点比阿去在兄弟节点下的下标
+            iNow = $(this).parent().index();
+            tab();
+
+            return false;
+        })
+
+        //鼠标移入移出效果
+        $("#app div").on("mouseenter", "#J_img", function () {
+            clearInterval(timer);
+        })
+        $("#app div").on("mouseleave", "#J_img", function () {
+            timer = setInterval(function () {
+                iNow++;
+                tab();
+            }, 3000)
+        })
+
+        //上一张按钮下一张按钮点击
+        $("#app div").on("click",".ui-prev,.ui-next",function(){
+            if(this.className == "ui-prev"){
+                iNow--;
+                if(iNow==-1){
+                    iNow=4;
+                }
+            }else{
+                iNow++;
+            }
+            tab();
+            return false;
+        })
+
+
+        //切换方法
+        function tab() {
+            if (!aImgs) {
+                aImgs = $("#J_img").find("img");
+            }
+            if (!aBtns) {
+                aBtns = $("#J_img").find(".ui-controls .ui-pager .ui-pager-item a");
+            }
+
+            if (aImgs.size() == 1) {
+                clearInterval(timer);
+            } else {
+                if (iNow == aBtns.size()) {
+                    iNow = 0;
+                }
+                aBtns.removeClass("active").eq(iNow).addClass("active");
+                aImgs.hide().eq(iNow).show();
+            }
+
+        }
     }
 
 
@@ -165,6 +262,7 @@ define(["jquery", "jquery-cookie"], function ($) {
     }
 
     return {
-        download:download
+        download: download,
+        banner: banner
     }
 })
