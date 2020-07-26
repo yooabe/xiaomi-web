@@ -204,13 +204,13 @@ define(["jquery", "jquery-cookie"], function ($) {
         })
 
         //上一张按钮下一张按钮点击
-        $("#app div").on("click",".ui-prev,.ui-next",function(){
-            if(this.className == "ui-prev"){
+        $("#app div").on("click", ".ui-prev,.ui-next", function () {
+            if (this.className == "ui-prev") {
                 iNow--;
-                if(iNow==-1){
-                    iNow=4;
+                if (iNow == -1) {
+                    iNow = 4;
                 }
-            }else{
+            } else {
                 iNow++;
             }
             tab();
@@ -238,6 +238,51 @@ define(["jquery", "jquery-cookie"], function ($) {
             }
 
         }
+
+        //加入购物车
+        $("#app div").on("click", ".J_login", function () {
+            //获取当前点击加入购物车按钮，商品id
+            //[{id:1,num1},{id:2,num2}]转为json存储在cookie中
+            var id = this.id;
+
+            //1.先判断是否为第一次添加
+            var first = $.cookie("goods") == null ? true : false;
+
+            //2.如果是第一次添加
+            if(first){
+                var cookieArr = [{id:id,num:1}];
+                $.cookie("goods",JSON.stringify(cookieArr),{
+                    expires:7
+                })
+            }else{
+                //3.判断之前是否添加过
+                var same = false;//假设没有添加过
+                var cookieStr = $.cookie("goods");
+                var cookieArr = JSON.parse(cookieStr);
+                for(var i =0;i<cookieArr.length;i++){
+                    if(cookieArr[i].id == id){
+                        //则判定为添加过该商品
+                        cookieArr[i].num++;
+                        same = true;
+                        break;
+                    }
+                }
+                if(!same){
+                    //则判定为没有添加过，需新增商品数据
+                    var obj = {id:id,num:1};
+                    cookieArr.push(obj);
+                }
+
+                //最后存放到cookie中
+                $.cookie("goods",JSON.stringify(cookieArr),{
+                    expires:7
+                })
+            }
+            alert($.cookie("goods"));
+            return false;
+        })
+
+
     }
 
 
