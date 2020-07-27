@@ -15,4 +15,5 @@ require.config({
 require(["goodsCart"],function(goodsCart){
     goodsCart.download();
     goodsCart.cartHover();
+    goodsCart.loadCarData();
 })
